@@ -1,0 +1,36 @@
+{
+  "name": "koa-framework-api",
+  "version": "1.0.0",
+  "description": "KOA Framework API Assignment",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koa-framework-api/koa-framework-api.git"
+  },
+  "author": "Tim and Ali Forman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlegriaForman/koa-framework-api/issues"
+  },
+  "homepage": "https://github.com/AlegriaForman/koa-framework-api#readme",
+  "dependencies": {
+    "koa": "^1.2.0",
+    "koa-body-parser": "^1.1.2",
+    "koa-router": "^5.4.0",
+    "mongoose": "^4.4.13"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^2.0.1",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^2.0.0",
+    "gulp-mocha": "^2.2.0",
+    "mocha": "^2.4.5"
+  }
+}
