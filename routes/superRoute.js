@@ -8,35 +8,42 @@ const supercarRouter = module.exports = Router();
 
 module.exports = exports = supercarRouter
   .get('/supercars', function *() {
-    yield Supercar.find({}, (err, data) => {
-      if (err) return errorHandler(err).bind(this);
-      this.response.status = 200;
-      this.response.body = data;
-    });
+    try {
+      var data = yield Supercar.find({}).exec();
+    } catch (err) {
+      errorHandler(err).bind(this);
+    }
+    this.response.status = 200;
+    this.response.body = data;
   })
 
   .post('/supercars', bodyParser(), function *() {
-    const newSupercar = yield Supercar.create(this.request.body);
-    yield newSupercar.save((err, data) => {
-      if (err) return errorHandler(err).bind(this);
-      this.response.status = 200;
-      this.response.body = data;
-    });
+    try {
+      var data = yield Supercar.create(this.request.body);
+    } catch (err) {
+      errorHandler(err).bind(this);
+    }
+    this.response.status = 200;
+    this.response.body = data;
   })
 
   .put('/supercars/:id', bodyParser(), function *() {
     var carData = this.request.body;
-    Supercar.update({ _id: this.params.id }, carData, (err) => {
-      if (err) return errorHandler(err).bind(this);
-      this.response.status = 200;
-    });
+    try {
+      yield Supercar.update({ _id: this.params.id }, carData).exec();
+    } catch (err) {
+      errorHandler(err).bind(this);
+    }
+    this.response.status = 200;
     this.response.body = { msg: 'Car information edited successfully!' };
   })
 
   .delete('/supercars/:id', bodyParser(), function *() {
-    yield Supercar.remove({ _id: this.params.id }, err => {
-      if (err) return errorHandler(err).bind(this);
-      this.response.status = 200;
-      this.response.body = { msg: 'Car successfully removed!' };
-    });
+    try {
+      yield Supercar.remove({ _id: this.params.id });
+    } catch (err) {
+      errorHandler(err).bind(this);
+    }
+    this.response.status = 200;
+    this.response.body = { msg: 'Car successfully removed!' };
   });
