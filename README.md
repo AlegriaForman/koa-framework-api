@@ -29,7 +29,7 @@ Koa has a built-in <strong>use</strong> function similar to Express for adding m
   var koa = require(‘koa’);
   var app = koa();
 
-  app.use(function* (next){
+  app.use(function *(next){
     this.type = ‘json’;
     this.status = 200;
     this.body = {‘Welcome’: ‘Hello World!’};
@@ -41,6 +41,8 @@ Koa has a built-in <strong>use</strong> function similar to Express for adding m
 ### Koa vs. Express - Router
 
 Koa does not have a built-in router like Express but there are several available. We chose to use koa-router in our project as it appears to be the most widely used with approximately 62,000 downloads per month, although it does have 29 open issues on Git Hub.
+
+### Error Handling in Koa
 
 Examples of error handling in Koa might be:
 ```
