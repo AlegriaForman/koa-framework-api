@@ -7,7 +7,7 @@ const errorHandler = require(__dirname + '/../lib/error_handler');
 const supercarRouter = module.exports = Router();
 
 module.exports = exports = supercarRouter
-  .get('/supercars', function* () {
+  .get('/supercars', function *() {
     yield Supercar.find({}, (err, data) => {
       if (err) return errorHandler(err).bind(this);
       this.response.status = 200;
@@ -15,7 +15,7 @@ module.exports = exports = supercarRouter
     });
   })
 
-  .post('/supercars', bodyParser(), function* () {
+  .post('/supercars', bodyParser(), function *() {
     const newSupercar = yield Supercar.create(this.request.body);
     yield newSupercar.save((err, data) => {
       if (err) return errorHandler(err).bind(this);
@@ -24,9 +24,8 @@ module.exports = exports = supercarRouter
     });
   })
 
-  .put('/supercars/:id', bodyParser(), function* () {
+  .put('/supercars/:id', bodyParser(), function *() {
     var carData = this.request.body;
-    delete carData._id;
     Supercar.update({ _id: this.params.id }, carData, (err) => {
       if (err) return errorHandler(err).bind(this);
       this.response.status = 200;
@@ -34,7 +33,7 @@ module.exports = exports = supercarRouter
     this.response.body = { msg: 'Car information edited successfully!' };
   })
 
-  .delete('/supercars/:id', bodyParser(), function* () {
+  .delete('/supercars/:id', bodyParser(), function *() {
     yield Supercar.remove({ _id: this.params.id }, err => {
       if (err) return errorHandler(err).bind(this);
       this.response.status = 200;
