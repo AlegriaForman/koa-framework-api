@@ -1,11 +1,14 @@
-const chai =  require('chai');
+const chai = require('chai');
+const expect = chai.expect;
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
-const expect = chai.expect;
 const request = chai.request;
+const errorHandler = require(__dirname + '/../lib/error_handler');
 const mongoose = require('mongoose');
-process.env.MONGOLAB_URI = 'mongodb://localhost/db';
-const server = require(__dirname + '/../server');
+const port = process.env.PORT = 5555;
+
+process.env.MONGOLAB_URI = 'mongodb://localhost/test_db';
+require(__dirname + '/../server');
 const Supercar = require(__dirname + '/../models/supercars');
 
 describe('test API methods of GET and POST:', () => {
@@ -16,9 +19,9 @@ describe('test API methods of GET and POST:', () => {
   });
 
   it('should POST Porsche 918 Spyder with price $847,000 ', (done) => {
-    request('localhost:3000')
+    request('localhost:' + port)
       .post('/supercars')
-      .send({ make:'Porsche', model:'918 Spyder', zeroToSixty:3, price: 847000 })
+      .send({ make: 'Porsche', model: '918 Spyder', zeroToSixty: 3, price: 847000 })
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
@@ -31,7 +34,7 @@ describe('test API methods of GET and POST:', () => {
   });
 
   it('should GET the all the supercars ', (done) => {
-    request('localhost:3000')
+    request('localhost:' + port)
       .get('/supercars')
       .end((err, res) => {
         expect(err).to.eql(null);
@@ -43,17 +46,32 @@ describe('test API methods of GET and POST:', () => {
 });
 
 describe('test PUT and DELETE methods: ', () => {
+
   beforeEach((done) => {
-    Supercar.create({ make: 'McLaren', model: '675LT', zeroToSixty: 3, price: 345000 }, (err, data) => {
+    var newCar = new Supercar({ make: 'McLaren', model: '675LT', zeroToSixty: 3, price: 345000 });
+    newCar.save((err, data) => {
+      if (err) return errorHandler(err, data);
       this.testSupercar = data;
       done();
     });
   });
 
+  afterEach((done) => {
+    this.testSupercar.remove(() => {
+      done();
+    });
+  });
+
+  after((done) => {
+    mongoose.connection.db.dropDatabase(() => {
+      done();
+    });
+  });
+
   it('should PUT changes made to the supercar ', (done) => {
-    request('localhost:3000')
+    request('localhost:' + port)
       .put('/supercars/' + this.testSupercar._id)
-      .send({price: 400000})
+      .send({ price: 400000 })
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
@@ -63,7 +81,7 @@ describe('test PUT and DELETE methods: ', () => {
   });
 
   it('should DELETE the supercar ', (done) => {
-    request('localhost:3000')
+    request('localhost:' + port)
       .delete('/supercars/' + this.testSupercar._id)
       .end((err, res) => {
         expect(err).to.eql(null);
