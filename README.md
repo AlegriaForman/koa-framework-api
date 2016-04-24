@@ -24,7 +24,7 @@ That’s not to say there aren’t drawbacks. For one, we had to use the <strong
 
 Setting up a server was very similar to Express. You can set up a http server in Koa by typing <strong>koa.listen(3000);</strong>
 
-Koa has a built-in use function similar to Express for adding middleware to your application. An example of this might be:
+Koa has a built-in <strong>use</strong> function similar to Express for adding middleware to your application. An example of this might be:
 ```
   var koa = require(‘koa’);
   var app = koa();
