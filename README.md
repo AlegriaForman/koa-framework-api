@@ -1,7 +1,8 @@
-### Koa-Framework-API
+## Koa-Framework-API
+### An experiment to compare specific features of KoaJS to ExpressJS.
 
 - KOA requires Node very much like Express.
-- The '—harmony' flag is needed to run KOA for example: to run app.js you enter <strong>node —harmony app.js</strong> or create an alias such as <strong>node=‘node —harmony’</strong>
+- The '—harmony' flag is needed to run KOA for example: to run server.js you enter <strong>node —harmony server.js</strong> or create an alias such as <strong>node=‘node —harmony’</strong> so you can enter <strong>node server.js</strong>.
 
 ### Koa - generators vs. Express - promises
 
@@ -23,12 +24,12 @@ That’s not to say there aren’t drawbacks. For one, we had to use the <strong
 
 Setting up a server was very similar to Express. You can set up a http server in Koa by typing <strong>koa.listen(3000);</strong>
 
-Koa has a built-in use function similar to Express for adding middleware to your application. An example of this might be:
+Koa has a built-in <strong>use</strong> function similar to Express for adding middleware to your application. An example of this might be:
 ```
   var koa = require(‘koa’);
   var app = koa();
 
-  app.use(function* (next){
+  app.use(function *(next){
     this.type = ‘json’;
     this.status = 200;
     this.body = {‘Welcome’: ‘Hello World!’};
@@ -40,6 +41,8 @@ Koa has a built-in use function similar to Express for adding middleware to your
 ### Koa vs. Express - Router
 
 Koa does not have a built-in router like Express but there are several available. We chose to use koa-router in our project as it appears to be the most widely used with approximately 62,000 downloads per month, although it does have 29 open issues on Git Hub.
+
+### Error Handling in Koa
 
 Examples of error handling in Koa might be:
 ```
