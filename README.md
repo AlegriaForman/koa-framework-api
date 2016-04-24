@@ -1,7 +1,8 @@
-### Koa-Framework-API
+## Koa-Framework-API
+### An experiment to compare specific features of KoaJS to ExpressJS.
 
 - KOA requires Node very much like Express.
-- The '—harmony' flag is needed to run KOA for example: to run app.js you enter <strong>node —harmony app.js</strong> or create an alias such as <strong>node=‘node —harmony’</strong>
+- The '—harmony' flag is needed to run KOA for example: to run server.js you enter <strong>node —harmony server.js</strong> or create an alias such as <strong>node=‘node —harmony’</strong> so you can enter <strong>node server.js</strong>.
 
 ### Koa - generators vs. Express - promises
 
