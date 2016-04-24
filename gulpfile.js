@@ -36,5 +36,4 @@ gulp.task('watch', () => {
   gulp.watch(paths, ['lint:test', 'lint:nontest']);
 });
 
-
 gulp.task('default', ['lint:test', 'lint:nontest', 'mocha:test']);
