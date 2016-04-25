@@ -18,8 +18,45 @@ This method of control flow in asynchronous operations is more readable compared
 
 Rather than using <strong>req</strong> and <strong>res</strong>, a KOA context is created that encapsulates node’s request and response so you use <strong>this.request</strong> and <strong>this.response</strong> instead.
 
-That’s not to say there aren’t drawbacks. For one, we had to use the <strong>bind</strong> command for the error handler. Also, we ran into an interesting problem with our PUT route in that the yield command was producing an unexpected result causing us to not use it and instead put the response object in the outer function. In Express we would have used res.write( ) and res.end( )
+That’s not to say there aren’t drawbacks. Koa definitely wants you to use Promises. For example, we had to use the <strong>bind</strong> command for the error handler. Also, we ran into an interesting problem with our PUT route in that the yield command was producing an unexpected result causing us to not use it and instead put the response object in the outer function.
 
+<i>Original code: this didn't work</i>
+```
+.put('/supercars/:id', bodyParser(), function *() {
+    var carData = this.request.body;
+    yield Supercar.update({ _id: this.params.id }, carData, (err) => {
+      if (err) return errorHandler(err).bind(this);
+      this.response.status = 200;
+      this.response.body = { msg: 'Car information edited successfully!' };
+    });
+  })
+```
+<i>First change: this worked</i>
+```
+.put('/supercars/:id', bodyParser(), function *() {
+    var carData = this.request.body;
+    Supercar.update({ _id: this.params.id }, carData, (err) => {
+      if (err) return errorHandler(err).bind(this);
+      this.response.status = 200;
+    });
+    this.response.body = { msg: 'Car information edited successfully!' };
+  })
+  ```
+  This led to a refactor of the router file where we chose to use try/catch instead. In Express we would have used res.write( ) and res.end( ).
+
+  <i>Final change</i>
+  ```
+  .put('/supercars/:id', bodyParser(), function *() {
+    var carData = this.request.body;
+    try {
+      yield Supercar.update({ _id: this.params.id }, carData).exec();
+    } catch (err) {
+      errorHandler(err).bind(this);
+    }
+    this.response.status = 200;
+    this.response.body = { msg: 'Car information edited successfully!' };
+  })
+  ```
 ### Koa vs. Express - Server Setup
 
 Setting up a server was very similar to Express. You can set up a http server in Koa by typing <strong>koa.listen(3000);</strong>
